@@ -592,7 +592,7 @@ Si vamos a nuestro cloud shell, y lanzamos:
 
 Podemos ver los dos pods con estado "RUNNING" y las ips de nuestros servicios, vamos a anotar estas IPs:
 
-![oracle_cloud_login](/images/start_build_100.PNG)
+![oracle_cloud_login](/images/check_builds_100.PNG)
 
 ## Modificando el proyecto Angular
 
@@ -600,25 +600,25 @@ Ahora que tenemos estas IPs, vamos a configurar nuestro proyecto de Angular para
 
 1. /src/app/login.service.ts
 
-![oracle_cloud_login](/change_ips_101.PNG)
+![oracle_cloud_login](/images/change_ips_101.PNG)
 
 2. /src/app/orders.service.ts
 
-![oracle_cloud_login](/change_ips_102.PNG)
+![oracle_cloud_login](/images/change_ips_102.PNG)
 
 2. /src/app/product.service.ts
 
-![oracle_cloud_login](/change_ips_103.PNG)
+![oracle_cloud_login](/images/change_ips_103.PNG)
 
 ## Desplegando Angular
 
 Volvemos a los pipelines y lanzamos el de Angular, cuando finalice volvemos a la cloud shell y recuperamos la ip del nuevo servicio de front:
 
-![oracle_cloud_login](/change_ips_104.PNG)
+![oracle_cloud_login](/images/change_ips_104.PNG)
 
 Si ponemos esta IP en el navegador ya podemos acceder a nuestra app:
 
-![oracle_cloud_login](/working_105.PNG)
+![oracle_cloud_login](/images/working_105.PNG)
 
 ## Añadiendo productos
 
@@ -628,7 +628,7 @@ Podeis lanzarlo desde postman:
 
 `http://193.122.63.165:8090/products?name=Play Station&description=Juega a tus juegos favoritos cuando quieras, donde quieras, y como quieras con Nintendo Switch&price=549`
 
-![oracle_cloud_login](/create_product_106.PNG)
+![oracle_cloud_login](/images/create_product_106.PNG)
 
 O con un CURL desde el cloud shell:
 
@@ -638,4 +638,4 @@ O con un CURL desde el cloud shell:
 
 Y ya podemos ver nuestros productos y hacer una compra:
 
-![oracle_cloud_login](/create_product_107.PNG)
+![oracle_cloud_login](/images/create_product_107.PNG)
