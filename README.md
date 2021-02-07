@@ -415,3 +415,227 @@ Creamos nuestra base de datos:
 
 
 # Desplegando nuestras apps
+
+Ahora vamos a desplegar nuestro frontal y los microservicios, para ello primero vamos a importar los repositorios donde ya tenemos el código de estas apps.
+
+## Importando repositorios de GitHub
+
+Vamos a crear tres repositorios:
+
+- front_angular (https://github.com/AngelMGon/front_angular.git)
+- spring_products (https://github.com/AngelMGon/spring_products.git)
+- spring_registration (https://github.com/AngelMGon/spring_registration.git)
+
+Para ello vamos a Project Home, y hacemos clic en "Create Repository":
+
+![oracle_cloud_login](/images/copy_git_repos_70.PNG)
+
+Creamos los tres repositorios utilizando el nombre y la url que podeis ver mas arriba:
+
+![oracle_cloud_login](/images/copy_git_repos_72.PNG)
+
+
+## Configurando los proyectos con nuestros datos de acceso a OCIR y OKE
+
+### Modificar Kubeconfig
+Cambiamos los archivos kubeconfig de los tres repositorios por el que hemos creado nosotros, para ello vamos a cada uno de los repositorios y hacemos clic en el archivo kubeconfig:
+
+![oracle_cloud_login](/images/modify_repos_73.PNG)
+
+Hacemos clic en el lapiz de la derecha y sustituimos todo el fichero por nuestro kubeconfig:
+
+![oracle_cloud_login](/images/modify_repos_74.PNG)
+
+Por último hacemos clic en commit:
+
+![oracle_cloud_login](/images/modify_repos_75.PNG)
+
+### Modificar yaml de configuración de K8s
+
+Vamos a modificar los yaml de configuración de kuberntes de los tres repositorios, en el repositorio de angular, el fichero es front-angular.yaml:
+
+![oracle_cloud_login](/images/modify_repos_76.PNG)
+
+En los otros dos repositorios de spring, el fichero a modificar es rest-spring.yaml:
+
+![oracle_cloud_login](/images/modify_repos_77.PNG)
+
+En los tres ficheros, lo que tenemos que modificar es el atributo "image", vamos a sustituir:
+
+- Si nuestra región es diferente a Frankfurt, sustituimos "fra.ocir.io" por la de nuestra región, si no lo dejamos como está.
+- Vamos a sustituir el valor que veis marcado en el siguiente pantallazo por nuestro Object Storage Namespace /fra.ocir.io/{object_storage_namesplace}/demo/spring-registration:latest:
+
+![oracle_cloud_login](/images/modify_repos_78.PNG)
+
+### Modificar propiedades de BBDD de los microservicios
+
+Debemos configurar las aplicaciones con la ip,usuario y password correctos de nuestra MySQL, para ello tenemos que modificar el archivo /src/main/resources/application.properties de los dos repositorios de Spring:
+
+![oracle_cloud_login](/images/modify_repos_78_1.PNG)
+
+Aquí sustituimos la ip, el usuario y la password por los nuestros y hacemos commit:
+
+![oracle_cloud_login](/images/modify_repos_78_2.PNG)
+
+## Creando jobs y pipelines
+
+### Creando job de despliegue en OCIR de Angular
+
+Vamos a crear los jobs necesarios para configurar el despliegue automatizado de nuestras aplicaciones, para ello vamos a Builds -> Create a Build:
+
+![oracle_cloud_login](/images/create_build_79.PNG)
+
+En primer lugar, vamos a crear el job para construir y subir a OCIR la imagen del proyecto Angular, le damos un nombre al Job y elegimos OKE en la template:
+
+![oracle_cloud_login](/images/create_build_80.PNG)
+
+En la pestaña Git, elegimos el proyecto Angular y la rama "main":
+
+![oracle_cloud_login](/images/create_build_81.PNG)
+
+En la pestaña Steps, añadimos los siguientes pasos:
+
+1. Docker Login
+
+![oracle_cloud_login](/images/create_build_82.PNG)
+
+Elegimos MyOCIR:
+
+![oracle_cloud_login](/images/create_build_83.PNG)
+
+2. Docker Build, rellenamos "Image Name" con la que hemos configurado anteriormente:
+
+![oracle_cloud_login](/images/create_build_84.PNG)
+
+3. Docker Push, rellenamos "Image Name" con la que hemos configurado anteriormente:
+
+![oracle_cloud_login](/images/create_build_85.PNG)
+
+### Creando job de despliegue en OKE de Angular
+
+Creamos otro job, esta vez para desplegar en Kubernetes, le damos un nombre y elegimos la template OKE:
+
+![oracle_cloud_login](/images/create_build_86.PNG)
+
+En Git, elegimos las mismas opciones que en el anterior job, en steps añadimos:
+
+1. Docker Login
+
+![oracle_cloud_login](/images/create_build_87.PNG)
+
+2. OCIcli
+
+![oracle_cloud_login](/images/create_build_88.PNG)
+
+3. Unix Shell
+
+`bash -ex kubescript.sh`
+
+![oracle_cloud_login](/images/create_build_89.PNG)
+
+### Creando job de despliegue en OCIR del Microservicio Products
+
+Creamos un nuevo job:
+
+![oracle_cloud_login](/images/create_build_90.PNG)
+
+En Git, elegimos el proyecto products y su rama, en Steps, añadimos un Step de Maven:
+
+![oracle_cloud_login](/images/create_build_91.PNG)
+
+![oracle_cloud_login](/images/create_build_92.PNG)
+
+Y añadimos los Steps, Docker Login, Docker Build y Docker push configurando la ruta correcta de la imagen:
+
+![oracle_cloud_login](/images/create_build_93.PNG)
+
+### Terminando los jobs
+
+Por último, creamos el job de despliegue en OKE de Products, exactamente igual que el Front, pero eligiendo en Git el repositorio de Products.
+
+Y creamos otros dos jobs como los de Products, para el proyecto Registration, al finalizar debemos tener seis jobs:
+
+![oracle_cloud_login](/images/create_build_94.PNG)
+
+### Creando los pipelines
+
+Vamos a crear el de front de ejemplo, luego tendreis que crear los otros dos de Spring.
+
+Navegamos a la pestaña Pipelines, y hacemos clic en "Create Pipeline", le damos un nombre y quitamos los checks, hacemos clic en "Create":
+
+![oracle_cloud_login](/images/create_build_95.PNG)
+
+Arrastramos los jobs correspondientes y los unimos, debe quedar como en la siguiente imagen, hacemos clic en "Save":
+
+![oracle_cloud_login](/images/create_build_96.PNG)
+
+Creamos los pipelines para los otros dos proyectos, debemos tener tres pipelines como en la siguiente imagen:
+
+![oracle_cloud_login](/images/create_build_97.PNG)
+
+## Lanzando los jobs
+
+Ahora que tenemos los jobs y pipelines configurados vamos a lanzarlos, primero vamos a lanzar los de Spring, empezamos lanzando el de Registration haciendo clic en el boton "Build".
+
+Una vez lanzado veremos como arraiba aparece en la cola:
+
+![oracle_cloud_login](/images/start_build_98.PNG)
+
+Cuando haya finalizado lanzamos el pipeline de Products, cuando ambos finalicen correctamente, podemos comprobar que en OCIR, tenemos dos imagenes que corresponden a los proyectos de Spring:
+
+![oracle_cloud_login](/images/start_build_99.PNG)
+
+Si vamos a nuestro cloud shell, y lanzamos:
+
+`kubectl get pods`
+`kubectl get services`
+
+Podemos ver los dos pods con estado "RUNNING" y las ips de nuestros servicios, vamos a anotar estas IPs:
+
+![oracle_cloud_login](/images/start_build_100.PNG)
+
+## Modificando el proyecto Angular
+
+Ahora que tenemos estas IPs, vamos a configurar nuestro proyecto de Angular para que apunte a estos servicios, para eso tenemos que modificar los siguientes ficheros y cambiar las IPs a las que correspondan:
+
+1. /src/app/login.service.ts
+
+![oracle_cloud_login](/change_ips_101.PNG)
+
+2. /src/app/orders.service.ts
+
+![oracle_cloud_login](/change_ips_102.PNG)
+
+2. /src/app/product.service.ts
+
+![oracle_cloud_login](/change_ips_103.PNG)
+
+## Desplegando Angular
+
+Volvemos a los pipelines y lanzamos el de Angular, cuando finalice volvemos a la cloud shell y recuperamos la ip del nuevo servicio de front:
+
+![oracle_cloud_login](/change_ips_104.PNG)
+
+Si ponemos esta IP en el navegador ya podemos acceder a nuestra app:
+
+![oracle_cloud_login](/working_105.PNG)
+
+## Añadiendo productos
+
+Por último necesitamos añadir productos a nuestra tienda, en este caso no hemos desarrollado una interfaz de administración para añadirlos pero si que tenemos servicios REST con los que crear estos productos:
+
+Podeis lanzarlo desde postman:
+
+`http://193.122.63.165:8090/products?name=Play Station&description=Juega a tus juegos favoritos cuando quieras, donde quieras, y como quieras con Nintendo Switch&price=549`
+
+![oracle_cloud_login](/create_product_106.PNG)
+
+O con un CURL desde el cloud shell:
+
+`curl --location --request POST 'http://193.122.63.165:8090/products?name=Play%20Station&description=Juega%20a%20tus%20juegos%20favoritos%20cuando%20quieras,%20donde%20quieras,%20y%20como%20quieras%20con%20Nintendo%20Switch&price=549'`
+
+(Otra opción es hacer los inserts desde BBDD)
+
+Y ya podemos ver nuestros productos y hacer una compra:
+
+![oracle_cloud_login](/create_product_107.PNG)
