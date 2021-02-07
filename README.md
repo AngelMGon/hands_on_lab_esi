@@ -323,17 +323,17 @@ Y hacemos clic en "Create":
 
 Vamos ahora a crear la instancia de MySQL, para ello navegamos a MySQL -> DB Systems:
 
-![oracle_cloud_login](/images/mysql_57.PNG)
+![oracle_cloud_login](/images/create_mysql_57.PNG)
 
 ## Creando instancia linux para conectar a la MySQL
 
 Elegimos el compartment y hacemos clic en "Create MySQL DB System":
 
-![oracle_cloud_login](/images/mysql_58.PNG)
+![oracle_cloud_login](/images/create_mysql_58.PNG)
 
 Dejamos todo por defecto y hacemos clic en Next:
 
-![oracle_cloud_login](/images/mysql_59.PNG)
+![oracle_cloud_login](/images/create_mysql_59.PNG)
 
 Le damos nombre de usuario y password:
 
@@ -344,37 +344,37 @@ Podeis usar estos datos:
 
 Lo demás lo dejamos por defecto y hacemos clic en "Next":
 
-![oracle_cloud_login](/images/mysql_60.PNG)
+![oracle_cloud_login](/images/create_mysql_60.PNG)
 
 Todo por defecto y hacemos clic en "Create":
 
-![oracle_cloud_login](/images/mysql_61.PNG)
+![oracle_cloud_login](/images/create_mysql_61.PNG)
 
 Nos aparecerá el detalle de la mysql con estado creando:
 
-![oracle_cloud_login](/images/mysql_62.PNG)
+![oracle_cloud_login](/images/create_mysql_62.PNG)
 
 Una vez creado, nos aparecerá toda la la información, copiamos  la ip, ya que la necesitaremos en proximos pasos:
 
-![oracle_cloud_login](/images/mysql_63.PNG)
+![oracle_cloud_login](/images/create_mysql_63.PNG)
 
 ## Creando nuestra instancia de linux para acceder a la MySQL
 
 Para acceder a la MySQL por seguridad solo podemos acceder desde una máquina que esté en la misma red, para ello vamos a crear una máquina virtual, para ello navegamos a Compute -> Instances:
 
-![oracle_cloud_login](/images/instance_64.PNG)
+![oracle_cloud_login](/images/create_instance_64.PNG)
 
 Y hacemos clic en "Create instance":
 
-![oracle_cloud_login](/images/instance_64_1.PNG)
+![oracle_cloud_login](/images/create_instance_64_2.PNG)
 
 En la siguiente pantalla dejamos todo por defecto, pero antes nos descargamos la clave privada y púbica y la guardamos en nuestro pc:
 
-![oracle_cloud_login](/images/instance_65.PNG)
+![oracle_cloud_login](/images/create_instance_65.PNG)
 
 Nos aparecerá el detalle de la instancia con estado creando, una vez finalice aparecerá con estado running y podemos ver los detalles de la máquina, vamos a necesitar la Public IP Address:
 
-![oracle_cloud_login](/images/instance_66.PNG)
+![oracle_cloud_login](/images/create_instance_66.PNG)
 
 Volvemos a nuestra Cloud Shell, vamos a pasar la clave ssh que tenemos en nuestro pc a la cloud shell, para ello vamos a abrir la clave que hemos descargado con un editor de texto (bloc de notas, notepad++...) y vamos a copiar el contenido.
 
@@ -406,6 +406,8 @@ Para poder conectar desde está máquina a la MySQL, primero tenemos que habilit
 Una vez configurados los puertos, ya podemos acceder, para ello usamos el siguiente comando, sustituyendo la IP por la de vuestra MySQL:
 
 `mysql --host 10.0.10.6 -u admin -p`
+
+![oracle_cloud_login](/images/connect_to_mysql_69.PNG)
 
 Creamos nuestra base de datos:
 
