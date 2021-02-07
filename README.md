@@ -89,6 +89,97 @@ En el popup que nos aparece, hacemos clic en Copy, y anotamos este token en un a
 
 ### Crear un API Key
 
+En la página de detalle de nuestro usuario, abajo a la izquierda hacemos clic en "API Keys" y hacemos clic en "Add API Key":
+
+![oracle_cloud_login](/images/api_key_14.PNG)
+
+Elegimos la opción "Generate API Key pair" y hacemos clic en descargar la clave privada y la pública, una vez lo hemos descargado, hacemos clic en "add":
+
+![oracle_cloud_login](/images/api_key_15.PNG)
+
+En el siguiente popup, hacemos clic en copy, y guardamos estos datos. Hacemos clic en "close"
+
+![oracle_cloud_login](/images/api_key_16.PNG)
+
 # Configurando la instancia de Visual Builder Studio
+
+En esta sección vamos a ver como crear la instancia de Visual Builder Studio(VBS) y como configurarla.
+
+## Creando la instancia
+
+Para crear la instancia, desde el menu de OCI vamos a Platform Services -> Developer
+
+![oracle_cloud_login](/images/vbs_create_17.PNG)
+
+Hacemos clic en "Create instance":
+
+![oracle_cloud_login](/images/vbs_create_18.PNG)
+
+Rellenamos el formulario, le damos un nombre a la instancia, descripción, nuestro email y en region elegimos : eu-frankfurt-1.
+
+![oracle_cloud_login](/images/vbs_create_19.PNG)
+
+En la siguiente pantalla podemos ver un resumen, hacemos clic en Create.
+
+![oracle_cloud_login](/images/vbs_create_20.PNG)
+
+En la siguiente pantalla vemos como se está creado la instancía (puede tardar unos minutos):
+
+![oracle_cloud_login](/images/vbs_create_21.PNG)
+
+Podemos ir refrescando la página, una vez creado hacemos clic en la hamburguesa y en "Access Service Instance"
+
+![oracle_cloud_login](/images/vbs_create_22.PNG)
+
+## Conectando VBS con OCI
+
+Para conectar con OCI, necesitamos ciertos datos, algunos ya los hemos ido guardando, para obtener los que nos faltan, tenemos que ir a Administration -> Tenancy Details y guardamos el valor de "Object Storage Namespace"
+
+![oracle_cloud_login](/images/vbs_configure_26.png)
+
+Volvemos a VBS y en la pestaña OCI Accountm hacemos clic en "Connect":
+
+![oracle_cloud_login](/images/vbs_configure_23.png)
+
+Rellenamos el formulario con los datos que hemos ido obteniendo, hacemos clic en validate y si todo está correcto hacemos clic en "Save":
+
+![oracle_cloud_login](/images/vbs_configure_24.png)
+
+### Crear una máquina virtual
+
+Una vez hemos conectado la cuenta de OCI, vamos a configurar las maquinas virtuales que vamos a usar para ejecutar los jobs de construcción de las imagenes y despliegue en kubernetes, para ello vamos a la pestaña "Virtual Machines Templates" y hacemos clic en "Create template"
+
+![oracle_cloud_login](/images/vbs_configure_template_27.png)
+
+Le damos un nombre a la template, puede ser OKE, elegimos Oracle Linux 7 y hacemos clic en create:
+
+![oracle_cloud_login](/images/vbs_configure_template_28.png)
+
+Una vez creada, elegimos la template y hacemos clic en "Configure Software":
+
+![oracle_cloud_login](/images/vbs_configure_template_29.png)
+
+Seleccionamos los siguientes paquetes de software:
+
+- Docker 17.12
+- Kubectl
+- OCIcli ==> Al añadir este paquete, pedirá añadir tambien Python3 (se añade haciendo clic en el +)
+- SQLcl 
+
+![oracle_cloud_login](/images/vbs_configure_template_30.png)
+
+Una vez configurado, hacemos clic en Done y veremos un resumen lo que tiene configura la template:
+
+![oracle_cloud_login](/images/vbs_configure_template_30.png)
+
+Ahora que tenemos una plantilla donde hemos configurado que queremos que tenga nuestra VM, vamos a crearla, para ello vamos a "Virtual Machines" y hacemos clic en "Create VM":
+
+![oracle_cloud_login](/images/vbs_create_vm_32.png)
+
+Elegimos las siguientes opciones y hacemos clic en "Add":
+
+![oracle_cloud_login](/images/vbs_create_vm_33.png)
+
+### Configurando el proyecto de VBS
 # Configurando la instancia de Kubernetes
 # Desplegando nuestras apps
