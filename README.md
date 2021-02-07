@@ -5,6 +5,14 @@ Todos los componentes de la aplicación estarán desplegados en Kubernetes de fo
 # Prerequisitos
 Para poder empezar este lab necesitamos una cuenta de Oracle Cloud, antes del inicio del taller debeis haber recibido un email con un enlace para registraros de forma gratuita, si aun no lo habeis hecho, podeis hacerlo en este enlace: [clic aqui!](https://signup.oraclecloud.com/).
 
+Os debe salir algo parecido a esto:
+ 
+![oracle_cloud_login](/images/oracle_cloud_registro_1_1.PNG)
+
+Rellenais con vuestros datos y elegis "Frankfurt" como region.
+
+![oracle_cloud_login](/images/oracle_cloud_registro_1_2.PNG)
+
 Una vez completado el formulario, recibirás un correo de Oracle con la URL de acceso (Este proceso puede tardar).
 
 # Componentes de este lab
@@ -129,7 +137,7 @@ En la siguiente pantalla vemos como se está creado la instancía (puede tardar 
 
 Podemos ir refrescando la página, una vez creado hacemos clic en la hamburguesa y en "Access Service Instance"
 
-![oracle_cloud_login](/images/vbs_create_22.PNG)
+![oracle_cloud_login](/images/vbs_create_22.png)
 
 ## Conectando VBS con OCI
 
@@ -145,7 +153,7 @@ Rellenamos el formulario con los datos que hemos ido obteniendo, hacemos clic en
 
 ![oracle_cloud_login](/images/vbs_configure_24.png)
 
-### Crear una máquina virtual
+## Crear una máquina virtual
 
 Una vez hemos conectado la cuenta de OCI, vamos a configurar las maquinas virtuales que vamos a usar para ejecutar los jobs de construcción de las imagenes y despliegue en kubernetes, para ello vamos a la pestaña "Virtual Machines Templates" y hacemos clic en "Create template"
 
@@ -180,6 +188,41 @@ Elegimos las siguientes opciones y hacemos clic en "Add":
 
 ![oracle_cloud_login](/images/vbs_create_vm_33.png)
 
-### Configurando el proyecto de VBS
+## Creando un nuevo proyecto en VBS
+
+Vamos a la pestaña "projects" y hacemos clic en "Create":
+
+![oracle_cloud_login](/images/vbs_create_project_34.PNG)
+
+Le damos un nombre al proyecto y hacemos clic en "Next":
+
+![oracle_cloud_login](/images/vbs_create_project_35.PNG)
+
+Elegimos la opción "Empty Project" y hacemos clic en "Next":
+
+![oracle_cloud_login](/images/vbs_create_project_36.PNG)
+
+Hacemos clic en "Finish":
+
+![oracle_cloud_login](/images/vbs_create_project_37.PNG)
+
+Nos debe aparecer una pantalla donde podemos ver las herramientas que se están cargando en el proyecto, una vez finaliza nos redirigirá a la pantalla del proyecto:
+
+![oracle_cloud_login](/images/vbs_create_project_38.PNG)
+
+## Configurando OCIR en VBS
+
+Ahora vamos a conectar nuestro proyecto de VBS con OCIR, para ello vamos a la opción "Docker" en el menú de la izquierda y hacemos clic en "Link External Registry":
+
+![oracle_cloud_login](/images/vbs_create_project_39.PNG)
+
+Rellenamos en formulario con los siguientes datos:
+
+- Registry Name: MyOCIR
+- Registry URL: La url del repositorio de OCIR. Para Frankfurt es: https://fra.ocir.io , si habeís elegido otra zona debeis cambiar "fra" por el código de la zona.
+- Username:  Está compuesto por {object namespace}/oracleidentitycloudservice/{username}, teneis el ejemplo de mi usuario en el siguiente pantallazo.
+- Password: El token que hemos configurado previamente (No es la contraseña de vuestro usuario!)
+
+![oracle_cloud_login](/images/vbs_create_project_40.PNG)
 # Configurando la instancia de Kubernetes
 # Desplegando nuestras apps
